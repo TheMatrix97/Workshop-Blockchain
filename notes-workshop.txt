@@ -1,0 +1,144 @@
+#1 Crearem el projecte de Node
+$ npm init
+#2 Instal·larem Hardhat i dependencies 
+$ npm install --save-dev hardhat @nomicfoundation/hardhat-network-helpers @nomicfoundation/hardhat-ethers ethers
+
+#3 Crearem el projecte de hardhat (Create an empty hardhat.config.js)
+npx hardhat init
+
+#4 Crearem el contracte Box sota contracts/Box.sol
+mkdir contracts
+cat << EOF > contracts/Box.sol
+// contracts/Box.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Box {
+    uint256 private _value;
+
+    // Emitted when the stored value changes
+    event ValueChanged(uint256 value);
+
+    // Stores a new value in the contract
+    function store(uint256 value) public {
+        _value = value;
+        emit ValueChanged(value);
+    }
+
+    // Reads the last stored value
+    function retrieve() public view returns (uint256) {
+        return _value;
+    }
+}
+EOF
+
+#5 Verifiquem que el SmartContract Compila
+$ npm hardhat compile
+
+#6 Aixequem un node de Ethereum local, en una nova finestra, per validar el SmartContract
+npm hardhat node
+
+> Com podeu veure, aixeca un node amb 19 comptes diferents (Wallets) de prova.
+
+#7 Desplegarem el SmartContract al node de test. Per fer-ho haurem de crear el script que executarem des del node per registrar el smartcontract a la blockchain
+mkdir scripts
+cat << EOF > scripts/deploy.js
+// scripts/deploy.js
+async function main () {
+  // We get the contract to deploy
+  const Box = await ethers.getContractFactory('Box');
+  console.log('Deploying Box...');
+  const box = await Box.deploy();
+  await box.waitForDeployment();
+  console.log('Box deployed to:', await box.getAddress());
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
+  });
+EOF
+
+> Com pots veure, estem recuperant el smartcontract amb la llibreria ethers.js i posteriorment fem el desplegament a la xarxa.
+
+> Important, hem d'importar la llibreria ethers a la configuració de hardhat (hardhat.config.js)
+
+// hardhat.config.js
+require("@nomicfoundation/hardhat-ethers");
+
+...
+module.exports = {
+...
+};
+
+#7.1 Ara, ja podem executar el script des del node que hem aixecat 
+$ npx hardhat run --network localhost scripts/deploy.js
+
+> Si tot ha anat bé, hauriem de veure la direcció assignada al contracte. Cada contracte a Ethereum té una direcció unica
+
+> Important, no tanqueu la terminal amb el node local de hardhat, o perdreu tota la informació
+
+> Si us fixeu, a la terminal del node local, veureu que s'ha registrat correctament el desplegament del contracte.
+
+#8 Interactuarem amb el smartContract mitjançant una consola
+$ npx hardhat console --network localhost
+$ const Box = await ethers.getContractFactory('Box');
+$ const box = box.attach('0x...') # Direcció del contracte
+$ await box.store(99)
+
+Recupera els valors que t'ha tornat l'execució de la funció, pots explicar el significat de cada camp?
+
+> A continuació recuperarem el valor de la caixa
+
+$ await box.retrieve() # Ha funcionat?
+
+> Farem un altre modificació de la caixa
+
+$ await box.store(4) # Han canviat els valors? S'ha creat un block nou?
+
+> Podem recuperar el valor de l'últim block
+
+$ await ethers.provider.getBlock("latest"); #Explica el significat dels camps que reconeixis 
+
+#9 - Desplegament a la testnet! Sembla que el SmartContract funciona bé :) Farem el desplegament a la testnet publica de Ethereum (Sepolia)
+
+Per interactuar amb la Blockchain, ens fa falta disposar d'un node dins de la xarxa, podem desplegar un node de Ethereum en local i connectar-lo a la xarxa, o podem fer servir Serveis gestionats que ja ens proporcionen d'aquests nodes
+En aquest cas, farem servir Alchemy.
+
+#9.1 - Ens crearem una wallet Ethereum a Metamask i ens enviarem Eth a aquesta, per poder fer el desplegament del contracte (No és gratis!)
+https://cloud.google.com/application/web3/faucet/ethereum/sepolia
+
+Haurem de crear un fitxer secrets.json amb el mnemonic que hem generat juntament amb la wallet (hem hagut d'activar la recuperació) i la clau que us proporcionem
+{
+	"mnemonic": "asd Asd ff"
+	"alchemyApiKey": ""
+}
+A més, de modificar el hardhat.config.js per afegir Sepolia (Això ho donarem fet...)
+
+Revisem que ens podem connectar al node d'Alchemy:
+$ npx hardhat console --network sepolia
+
+> Podem consultar el balanç que tenim al wallet
+
+$ (await ethers.provider.getBalance(accounts[0])).toString(); # Hauria de ser 50000000.... 0.05ETH
+
+#9.2 - Fem el desplegament
+npx hardhat run --network sepolia scripts/deploy.js
+
+Apunteu la direcció del vostre contracte i feu una cerca a etherscan
+https://sepolia.etherscan.io/+
+
+Marc -> 0x941C853C15F82C937fa6F5d1314046A5b079A7Fe
+
+#10 - Validem el codi font del contracte
+Pujarem el codi font a Etherscan per poder interactuar amb aquest. Només haurem de fer click a Contract > Upload Source Code i escollir:
+No optimization + EVM Paris (amb la que hem compilat el smartcontract)
+
+#11 - Connectem amb Metamask i fem la prova de modificar el valor (write) - valor: 99
+
+#12 - Recuperem el valor, ha funcionat?
+
+#13 - Estudieu els valors del EtherScan.
+
