@@ -12,32 +12,32 @@ In this workshop, you will learn how to:
 
 ## Requirements
 * Node LTS (v22.12.0)
-    > We recommend you to install node using the available package managers (`nvm` or `fnm`)
+    > We recommend to install node using the available package managers (`nvm` or `fnm`)
     > https://nodejs.org/en/download/package-manager
 * IDE (vscode, Intellij or Notepad)
 
-## 1. Local environment Setup
+## 1. Local environment setup
 
-1.1- Clone this repository
+1.1- Clone this GitHub repository
 
 ```bash
 git clone https://github.com/TheMatrix97/Workshop-Blockchain.git
 ```
 
-1.2- Install the npm dependencies already defined in [./package.json](./package.json)
+1.2- Install the `npm` dependencies already defined in [./package.json](./package.json)
 
 ```bash
 npm install
 ```
 
-1.3- Initialize [HardHat](https://hardhat.org/)
+1.3- Initialize a new [HardHat](https://hardhat.org/) config file
 
 > Hardhat is a development environment for SmartContracts and dApps for Ethereum
 
 ```bash
 npx hardhat init
 ```
-**Important:** Select the option to create and empty `hardhat.config.js`, we won't need an example project
+**Important:** Select the option to create and empty `hardhat.config.js`, we won't need an example project...
 
 ## 2. Write and compile the Smart Contract
 
@@ -65,7 +65,7 @@ contract Box {
 ```
 :pencil: P1- Try to understand what the contract does. Can you explain it?
 
-:pencil: P2- Why is it important to validate inputs (e.g `value > 0`)
+:pencil: P2- Why do you think is important to validate inputs (e.g `value > 0`)
 
 2.2- Compile the smart contract
 
@@ -111,18 +111,18 @@ module.exports = {
   solidity: "0.8.28",
 };
 ```
-3.4- Deploy the contract in our local blockchain instance
+3.4- Deploy the contract to the local blockchain instance
 
 ```bash
 npx hardhat run --network localhost scripts/deploy.js
 ```
-> Take note of the contract address printed in the terminal
+> Take note of the contract address returned
 
 ## 4. Interact with the Smart Contract
 
-At this point, the Smart Contract is already deployed in our local blockchain instance. Let's try to invoke their functions
+At this point, the Smart Contract is already deployed in our local blockchain instance. Let's try to invoke their functions...
 
-4.1- Open a hardhat console
+4.1- Open a local hardhat console
 
 ```bash
 npx hardhat console --network localhost
@@ -151,7 +151,7 @@ console.log(latestBlock);
 
 :pencil: P3- Write down the block parameters you obtained.
 
-:pencil: P4- Explain why you think transactions in Ethereum cost Gas. Which type of attack does it help mitigate?
+:pencil: P4- Explain what Gas is and why transactions in Ethereum consume Gas. Which type of attack does it help to mitigate?
 
 ## 5. Deploy to a public Testnet
 
@@ -246,11 +246,11 @@ Let's interact with the contract using Etherscan and MetaMask! Using Etherscan, 
 
 ![alt text](./img/write-ethscan.png)
 
-:pencil: P6- How much SepoliaEth will the transaction cost? Explain how transaction cost is computed
+:pencil: P6- How much `SepoliaEth` will the transaction cost? Explain how transaction cost is computed
 
-:pencil: P7- Is the transaction persisted immediately? Why? Explain the consensus protocol used currently in Ethereum networks.
+:pencil: P7- Is the transaction persisted immediately? Why? Explain the consensus protocol currently used in Ethereum networks.
 
-7.2- Run the contract's retrieve function you will find in `Read Contract` section. It returned the same value you wrote before?
+7.2- Run the contract's retrieve function you will find in `Read Contract` section. Does it return the same value you wrote before?
 
 :pencil: P8- Retrieve the transaction information associated to the `Store` function call. Also, write down the information of the block where the transaction is registered. Add some screenshots to the report
 
