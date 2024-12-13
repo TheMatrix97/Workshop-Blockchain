@@ -211,9 +211,16 @@ const { alchemyApiKey, mnemonic } = require('./secrets.json');
        url: `https://eth-sepolia.g.alchemy.com/v2/${alchemyApiKey}`,
        accounts: { mnemonic: mnemonic },
      },
+     ...
    },
 ```
 5.8- Deploy the Smart Contract to `Sepolia`
+
+> Check the cost of deploying your contract before deploying!
+
+```bash
+npx hardhat run --network  sepolia scripts/estimate-cost.js
+```
 
 ```bash
 npx hardhat run --network sepolia scripts/deploy.js
