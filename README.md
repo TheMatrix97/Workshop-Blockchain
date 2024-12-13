@@ -11,7 +11,7 @@ In this workshop, you will learn how to:
 
 
 ## Requirements
-* Node LTS (v22.12.0)
+* Node LTS (v22.16.0)
     > We recommend to install node using the available package managers (`nvm` or `fnm`)
     > https://nodejs.org/en/download/package-manager
 * IDE (vscode, Intellij or Notepad)
