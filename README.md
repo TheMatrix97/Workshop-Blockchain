@@ -222,7 +222,7 @@ const { alchemyApiKey, mnemonic } = require('./secrets.json');
 npx hardhat run --network  sepolia scripts/estimate-cost.js
 ```
 
-:pencil: P5- How much gas do you estimate to use to deploy the contract? How much ETH will it cost?
+:pencil: P5- How much gas do you estimate will be used to deploy the contract? How much ETH will it cost?
 
 ```bash
 npx hardhat run --network sepolia scripts/deploy.js
