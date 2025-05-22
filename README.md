@@ -139,14 +139,13 @@ await box.store(33); // Store a value
 4.3- Now, retrieve the value stored in the Box. Does it work?
 
 ```js
-console.log(await box.retrieve()); // Retrieve the value
+await box.retrieve(); // Retrieve the value
 ```
 
 4.4- Retrieve the last Block appended to the Blockchain
 
 ```js
-const latestBlock = await ethers.provider.getBlock('latest');
-console.log(latestBlock);
+await ethers.provider.getBlock('latest');
 ```
 
 :pencil: P3- Write down the block parameters you obtained.
@@ -187,7 +186,7 @@ First, let's create the wallet we will use to deploy the contract with [Metamask
 
 (https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
 
-5.5.3- Verify you have `0.005 Sepolia Eth` in your wallet
+5.5.3- Verify you have `0.05 Sepolia Eth` in your wallet
 
 5.6- We are closer to deploy our contract! Now, create a `secrets.json` file to store the `Secret Phrase` of our wallet and the `Alchemy` node API Key (*the lecturer will provide this value*)
 
@@ -210,7 +209,8 @@ const { alchemyApiKey, mnemonic } = require('./secrets.json');
      sepolia: {
        url: `https://eth-sepolia.g.alchemy.com/v2/${alchemyApiKey}`,
        accounts: { mnemonic: mnemonic },
-     },
+     }
+    }
      ...
    },
 ```
@@ -221,6 +221,8 @@ const { alchemyApiKey, mnemonic } = require('./secrets.json');
 ```bash
 npx hardhat run --network  sepolia scripts/estimate-cost.js
 ```
+
+:pencil: P5- How much gas do you estimate to use to deploy the contract? How much ETH will it cost?
 
 ```bash
 npx hardhat run --network sepolia scripts/deploy.js
@@ -237,13 +239,15 @@ At this point, we will take a look into the state of the blockchain using Ethers
 
 > As you might see, the contract is stored in bytecode, which makes difficult to users to understand the code behind. To solve that, we can verify the contract and include the source code.
 
+> Probably, someone already uploaded the same contract bytecode into the network, so validation is done automatically. If that's the case, you can skip step 6.2
+
 6.2- Select the option `Contract > Verify and publish` to include the source code of the contract.
 
 > Don't forget to include the code and set the EVM Target to `paris`
 
 ![alt text](img/verify-code.png)
 
-:pencil: P5- Include the contract address in the Lab report
+:pencil: P6- Include the contract address in the Lab report
 
 ## 7. Interact with the Smart Contract
 
@@ -253,15 +257,15 @@ Let's interact with the contract using Etherscan and MetaMask! Using Etherscan, 
 
 ![alt text](./img/write-ethscan.png)
 
-:pencil: P6- How much `SepoliaEth` will the transaction cost? Explain how transaction cost is computed
+:pencil: P7- How much `SepoliaEth` will the transaction cost? Explain how transaction cost is computed
 
-:pencil: P7- Is the transaction persisted immediately? Why? Explain the consensus protocol currently used in Ethereum networks.
+:pencil: P8- Is the transaction persisted immediately? Why? Explain the consensus protocol currently used in Ethereum networks.
 
 7.2- Run the contract's retrieve function you will find in `Read Contract` section. Does it return the same value you wrote before?
 
-:pencil: P8- Retrieve the transaction information associated to the `Store` function call. Also, write down the information of the block where the transaction is registered. Add some screenshots to the report
+:pencil: P9- Retrieve the transaction information associated to the `Store` function call. Also, write down the information of the block where the transaction is registered. Add some screenshots to the report
 
-:pencil: P9- Do you think 51% attacks are possible in Ethereum mainnet today? Justify your answer.
+:pencil: P10- Do you think 51% attacks are possible in Ethereum mainnet today? Justify your answer.
 
 # References
 * https://docs.openzeppelin.com/learn/developing-smart-contracts
